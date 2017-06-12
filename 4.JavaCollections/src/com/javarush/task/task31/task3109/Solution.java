@@ -1,5 +1,7 @@
 package com.javarush.task.task31.task3109;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.Properties;
 
 /* 
@@ -19,6 +21,36 @@ public class Solution {
     }
 
     public Properties getProperties(String fileName) {
-        return null;
+        Properties properties = new Properties();
+        int pos = fileName.lastIndexOf(".");
+        String ext = pos >= 0 ? fileName.substring(pos) : "";
+
+        try {
+            switch (ext) {
+                case ".xml": {
+                    FileInputStream fileInputStream = new FileInputStream(fileName);
+                    properties.loadFromXML(fileInputStream);
+                    fileInputStream.close();
+                    break;
+                }
+                case ".txt": {
+                    FileReader fileReader = new FileReader(fileName);
+                    properties.load(fileReader);
+                    fileReader.close();
+                    break;
+                }
+                default: {
+                    FileInputStream fileInputStream = new FileInputStream(fileName);
+                    properties.load(fileInputStream);
+                    fileInputStream.close();
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return properties;
+        }
+
+        return properties;
     }
 }
